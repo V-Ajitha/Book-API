@@ -1,0 +1,1359 @@
+client id --- 797231732184-kis4i0l69qp2a4ak62l3bcus9kjn73a9.apps.googleusercontent.com
+
+client secret --- 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
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="google-signin-client_id" content="797231732184-kis4i0l69qp2a4ak62l3bcus9kjn73a9.apps.googleusercontent.com">
+<title>Sign In With Google</title>
+	<style>
+		.data{
+			display:none;
+		}
+		.g-signin2{
+			display:flex;
+			justify-content: center;
+			align-items: center;
+			height:70vh;
+		}
+	</style>
+</head>
+<body>
+	<h2>SignIn with google</h2>
+	<div class="g-signin2" data-onsuccess="onSignIn"></div>
+	<div class="data">
+		<p>Name</p>
+		<p id="name"></p>
+		<p>Image</p>
+		<img id="image" width="100px" height="100px">
+		<p>Email</p>
+		<p id="email"></p>
+		<button id="logout" onclick="signOut()">Logout</button>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+	</div>
+
+</body>
+
+	<script>
+	function onSignIn(googleUser) {
+		  var profile = googleUser.getBasicProfile();
+		  $("#name").text(profile.getName());
+		  $("#email").text(profile.getEmail());
+		  $("#image").attr("src",profile.getEmail());
+		  $(".data").css("display","block");
+		  $(".g-signin2").css("display","none");
+		  console.log("h1");
+		}
+	
+	function signOut() {
+	    var auth2 = gapi.auth2.getAuthInstance();
+	    auth2.signOut().then(function () {
+	     console.log("h2");
+	     alert("You have been logout successfully..!");
+	     $(".g-signin2").css("display","block");
+	    });
+	  }
+		
+	</script>
+</html>
+
+
+
+
+
+
+
+
+
+http://localhost:8080
+
+http://localhost:8080/SignInWithGoogle/googleSignIn.html
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import java.util.Properties;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.BodyPart;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+
+
+public class fileSending {
+        public static void main(String[] args) {
+            // Recipient's email ID needs to be mentioned.
+            String to = "ajithav920@gmail.com";          // vigneshwaran.a@zohocorp.com
+
+            // Sender's email ID needs to be mentioned
+            String from = "mailmariya786@gmail.com";
+            final String username = "mailmariya786@gmail.com";//change accordingly
+            final String password = "iiwbtowszybbspas";//change accordingly
+
+            // Assuming you are sending email through relay.jangosmtp.net
+            String host = "smtp.gmail.com";
+
+            Properties props = new Properties();
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", host);
+            props.put("mail.smtp.port", "255");
+
+            // Get the Session object.
+            Session session = Session.getInstance(props,new javax.mail.Authenticator() {
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication(username, password);
+                        }
+                    });
+
+            try {
+                // Create a default MimeMessage object.
+                Message message = new MimeMessage(session);
+
+                // Set From: header field of the header.
+                message.setFrom(new InternetAddress(from));
+
+                // Set To: header field of the header.
+                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+
+                // Set Subject: header field
+                message.setSubject("Testing Subject");
+
+                // Create the message part
+                BodyPart messageBodyPart = new MimeBodyPart();
+
+                // Now set the actual message
+                messageBodyPart.setText("This is message body");
+
+                // Create a multipart message
+                Multipart multipart = new MimeMultipart();
+
+                // Set text message part
+                multipart.addBodyPart(messageBodyPart);
+
+                // Part two is attachment
+                messageBodyPart = new MimeBodyPart();
+                String filename = "/home/ajitha/English/english.txt";
+                DataSource source = new FileDataSource(filename);
+                messageBodyPart.setDataHandler(new DataHandler(source));
+                messageBodyPart.setFileName(filename);
+                multipart.addBodyPart(messageBodyPart);
+
+                // Send the complete message parts
+                message.setContent(multipart);
+
+                // Send message
+                Transport.send(message);
+
+                System.out.println("Sent message successfully....");
+
+            } catch (MessagingException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+
+}
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+	<title>Mail</title>
+	<style>
+	
+		.container{
+			border:1px solid black;
+			margin:300px auto;
+			width:500px;
+			height: 500px;
+		}
+		.label,input,textarea,button {
+			margin:20px;
+			/* padding:10px; */
+			border:3px solid black;
+		}
+	</style>
+</head>
+<body>
+		<form action="sendMsg">
+			<div class="container">
+				<label class="label">To Mail:</label><br>
+				<input type="email" name="toMail" id="toMail"><br>
+				<label class="label">From Mail:</label><br>
+				<input type="email" id="fromMail" placeholder="mailmariya786@gmail.com" disabled><br>
+				<textarea rows="4" cols="17" name="msg" placeholder="Messages"></textarea><br>
+				<form action="sendFile">
+					<label class="label">To Mail:</label><br>
+					<input type="email" name="toMail" id="toMail"><br>
+					<input type="file" name="fileInput">
+					<input type="submit" value="Upload File">
+			</form>
+				<button type="submit">Send</button>
+			</div>
+		</form>
+		
+		
+	
+</body>
+<!-- <script src="file.js"></script> -->
+</html>
+
+
+
+
+
+
+<action name="sendMsg" class="com.mail.SendToMail" method="sendMsg">
+			<result name="success">/success.html</result>
+			<result name="error">/error.html</result>
+</action>
+
+
+/home/ajitha/English/english.txt
+
+
+
+
+
+
+
+
+
+---------------------------Half completed code----------------
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+	<title>Music Player</title>
+	<style>
+		body{
+			/* background-color: #191C25; */
+			color:#B1CEEF;
+		}
+		#mainDiv{
+			width:80%;
+			height:58vh;
+			border:1px solid white;
+			margin:40% auto;
+		}
+		nav{
+			display: flex;
+			justify-content:space-between;
+			margin:3%;
+			padding:20px;
+			border:1px solid white;
+		}
+		#song-img{
+			border:1px solid white;
+			border-radius: 50%;
+			width:300px;
+			height:300px;
+			border:8px solid #B1CEEF;
+			box-shadow: 0px 10px 60px rgba(177,206,239,0.66);
+			display: flex;
+			justify-content:center;
+		}
+		#songDetails{
+			border:1px solid white;
+			text-align: center;
+			padding:20px;
+		}
+		
+		#artistContainer{
+			border:1px solid black;
+		}
+	</style>
+</head>
+
+<body>		
+		<div>
+			<input type="text" name="artist_name" id="artist_name" required>
+			<button id="searchButton">Search</button>
+		</div>
+		<div id="artistContainer"></div> 
+		
+</body>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>	
+	<script>
+		$(document).ready(function() {
+		    $("#searchButton").click(function() {
+		        var artistName = $("#artist_name").val();
+		        
+		        getArtistDetails(artistName);
+		    });
+		});
+
+		function getArtistDetails(artistName) {
+			console.log(artistName);
+		    $.ajax({
+		    	type: "POST",
+		        url: "/MusicPlayer/search",
+		        data: { artist_name: artistName }, // like xhr.send(data)
+		        success: function(response) {
+		        	updateArtistDetails(JSON.parse(response));
+		         	// console.log("success");
+		            
+		        },
+		        error: function(error) {
+		            console.log(error);
+		            alert(artist_name + " error");
+		        }
+		    });
+		}
+	    function updateArtistDetails(data) {
+		    if (data != null && data != undefined) {
+		    	
+		    	// console.log(data);
+		        var img = data.artist_image;
+		        var name = data.artist_name;   // another way : var name = data["artist_name"];
+
+		        var imgElement = $("<img>").attr("src", img).css({
+		            width: "200px", 
+		            height: "250px", 
+		            
+		        });
+
+		        var nameElement = $("<h1>").text(name).css({
+		            fontSize: "24px",    // Example: set text color
+		        });
+				
+		        $("#artistContainer").empty().append(imgElement, nameElement);
+		    } else {
+		        console.log("No artist details found.");
+		    }
+		}
+	</script>
+</html>
+
+
+package com.music;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletResponse;
+import org.json.JSONObject;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class MusicController {
+	
+	@RequestMapping("/")
+	public String indexPage() {
+		return "mainPage.html";
+	}
+
+	@RequestMapping("/search")
+	public void artistDetails(@ModelAttribute MainFunctions mainFunc, HttpServletResponse response) throws IOException {
+		
+		JSONObject result = mainFunc.getArtistDetails();
+       	PrintWriter out = response.getWriter();
+       
+	   	String artist_image = result.getString("artist_image");
+	   	String artist_name = result.getString("artist_name");
+		   
+	   	result.put("artist_image", artist_image);
+	   	result.put("artist_name", artist_name);
+       
+	   	out.println(result);
+
+	}
+}
+
+
+
+
+package com.music;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import org.json.JSONObject;
+
+public class MainFunctions{
+	
+	String artist_name; 
+	
+	public String getArtist_name() {
+		return artist_name;
+	}
+
+	public void setArtist_name(String artist_name) {
+		this.artist_name = artist_name;
+	}
+	
+	public JSONObject getArtistDetails() {
+		
+		try {
+			String selectQuery = "select * from artists where artist_name = ? ";
+			PreparedStatement pst = DBConnection.getConnection(selectQuery);
+			pst.setString(1, artist_name);
+			ResultSet rs = pst.executeQuery();
+			JSONObject json = new JSONObject();
+			
+			if(rs.next()) {
+				json.put("artist_image", rs.getString("artist_image"));
+				json.put("artist_name", rs.getString("artist_name"));
+				
+				return json;
+			}
+			else {
+				return null;
+			}
+		} catch (Exception e) {
+			System.out.println("Error:"+e);
+			return null;
+		}
+	}	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$(document).ready(function(){
+	$("#categories").change(function(){
+		var selectedCategory = $(this).val();
+		getCatagoryDetails(selectedCategory);
+	});
+});
+
+
+var categoriesContainer;
+var songDetailsContainer;
+
+function getCatagoryDetails(selectedCategory){
+	$.ajax({
+		type: "POST",
+		url: "/MusicPlayer/searchCategory",
+		data: { categories: selectedCategory },
+		success: function(res){
+			updateCatagory(res, selectedCategory);
+			songDetailsContainer.empty();           ///// empty()
+		},
+		error: function(error){
+			console.log(error);
+		}
+	});
+}
+
+
+function updateCatagory(data, selectedCategory) {
+	if (data != null && data != undefined) {
+		categoriesContainer = $("#categoriesContainer");
+		categoriesContainer.empty();               ///// empty()
+
+		for (var i = 0; i < data.length; i++) {
+			var category = data[i];
+
+			var imageSource = category[selectedCategory + "_image"];
+			var name = category[selectedCategory + "_name"];
+			
+			
+
+			var categoryDiv = $("<div>").addClass("category").css({
+				width: "300px",
+				height: "300px",
+				border: "1px solid black",
+				margin: "20px",
+				textAlign: "center",
+				/* boxShadow:"0px 0px 40px rgba(0,0,0,0.9)", */
+			});
+
+			var categoryImage = $("<img>").attr("src", imageSource).appendTo(categoryDiv).css({
+				width: "50%",
+				height: "50%",
+				padding: "20px",
+				borderRadius: "50%"
+			});
+
+			var categoryName = $("<h4>").text(name).appendTo(categoryDiv);
+
+			if(selectedCategory == "artists"){
+				var options = $("<p>").text("Artist").appendTo(categoryDiv);
+			}
+			else if(selectedCategory == "albums"){
+				var options = $("<p>").text("Album").appendTo(categoryDiv);
+			}
+			
+			categoryDiv.appendTo(categoriesContainer);
+
+
+			// Add a click event listener
+			categoryDiv.on("click", function() {
+			var clickedName = $(this).find("h4").text();
+			sendNameToJava(clickedName);
+			// var url = "songDetails.html" + "?category=" + encodeURIComponent(clickedName);
+			// console.log(url);
+			// window.location.href = url;	
+	});
+		}
+	} else {
+		console.log("No category details found.");
+	} 
+}
+
+
+
+
+
+function sendNameToJava(clickedName) {
+	$.ajax({
+		type: "POST",
+		url: "/MusicPlayer/getsongdetails",
+		data: { category: clickedName },
+		success: function(response) {
+			showSongDetails(response,clickedName);
+		},
+		error: function(error){
+			console.log(error);
+		}
+	});
+}
+
+function showSongDetails(data,artistName){
+
+	if (data != null && data != undefined) {
+		songDetailsContainer = $("#songDetailsContainer");
+		categoriesContainer.empty();    ///// empty()
+		songDetailsContainer.empty();   ///// empty()
+
+		for (var i = 0; i < data.length; i++) {
+			var songDetails = data[i];
+			
+			var sImage = songDetails.song_image;
+			var sName  = songDetails.song_name;
+			var sAudio = songDetails.audio;
+			var id = songDetails.song_id;
+			
+			var sondDetailsDiv = $("<div>").addClass("sondDetails").css({
+				width: "300px",
+				height: "350px",
+				border: "3px solid black",
+				margin: "20px",
+				textAlign: "center",
+				/* boxShadow:"0px 0px 40px rgba(0,0,0,0.9)", */
+			});
+			
+			var songImage = $("<img>").attr("src",sImage).appendTo(sondDetailsDiv).css({
+				width: "50%",
+				height: "50%",
+				margin:"20px",
+				borderRadius: "50%",
+				boxShadow:"0px 0px 40px rgba(0,0,0,0.6)",
+			});
+
+			var songName = $("<h4>").text(sName).appendTo(sondDetailsDiv).css({
+				color:"gray",
+			});
+
+			
+			
+			var song = $("<p>").text("Song").appendTo(sondDetailsDiv);
+
+			
+			var audioElement = $("<audio>").attr("src",sAudio).appendTo(sondDetailsDiv);
+				
+
+				var playButton = $("<button>").text("Play").appendTo(sondDetailsDiv);
+				var pauseButton = $("<button>").text("Pause").appendTo(sondDetailsDiv);
+				var resetButton = $("<button>").text("Reset").appendTo(sondDetailsDiv);
+
+				console.log("helloooo");
+				playButton.on("click",function(){
+					audioElement[0].play();
+				});
+				pauseButton.on("click",function(){
+					audioElement[0].pause();
+				});
+				resetButton.on("click",function(){
+					audioElement[0].currentTime = 0;
+					audioElement[0].pause();
+				});
+
+			sondDetailsDiv.appendTo(songDetailsContainer);
+			// playSong(sImage,sName,sAudio,id);
+			categoriesContainer.empty();    ///// empty()
+
+		}
+	} else {
+		console.log("No song details found.");
+	} 
+}
+-----------------------------------------each songgggggg play button-----------------------------------------
+
+function playSong(sImage,sName,sAudio,id){
+				
+	var songContainer = $("#songContainer");
+	var wrapper = $("<div>").addClass("song").css({
+		border:"5px solid black",
+		width:"500px",
+		height:"500px",
+	});
+
+	var songImage = $("<img>").attr("src",sImage).appendTo(wrapper).css({
+		width: "50%",
+		height: "50%",
+		margin:"20px",
+		borderRadius: "50%",
+		boxShadow:"0px 0px 40px rgba(0,0,0,0.6)",
+	});
+
+	var songName = $("<h2>").text(sName).appendTo(wrapper).css({
+
+	});
+
+	var Audio = $("<audio>").attr("src",sAudio).appendTo(wrapper);
+
+	var playButton = $("<button>").text("Play").appendTo(wrapper);
+	var pauseButton = $("<button>").text("Pause").appendTo(wrapper);
+	var resetButton = $("<button>").text("Reset").appendTo(wrapper);
+
+	console.log("helloooo");
+	playButton.on("click",function(){
+		Audio[0].play();
+	});
+	pauseButton.on("click",function(){
+		Audio[0].pause();
+	});
+	resetButton.on("click",function(){
+		Audio[0].currentTime = 0;
+		Audio[0].pause();
+	});
+	
+	wrapper.appendTo(songContainer);
+	
+}
+
+
+
+
+
+
+
+$(document).ready(function(){
+	$("#categories").change(function(){
+		var selectedCategory = $(this).val();
+		getCatagoryDetails(selectedCategory);
+	});
+});
+
+
+var categoriesContainer;
+var songDetailsContainer;
+
+function getCatagoryDetails(selectedCategory){
+	$.ajax({
+		type: "POST",
+		url: "/MusicPlayer/searchCategory",
+		data: { categories: selectedCategory },
+		success: function(res){
+			updateCatagory(res, selectedCategory);
+			songDetailsContainer.empty();           ///// empty()
+		},
+		error: function(error){
+			console.log(error);
+		}
+	});
+}
+
+
+function updateCatagory(data, selectedCategory) {
+	if (data != null && data != undefined) {
+		categoriesContainer = $("#categoriesContainer");
+		categoriesContainer.empty();               ///// empty()
+		
+
+		for (var i = 0; i < data.length; i++) {
+			var category = data[i];
+
+			var imageSource = category[selectedCategory + "_image"];
+			var name = category[selectedCategory + "_name"];
+			
+			
+
+			var categoryDiv = $("<div>").addClass("category").css({
+				width: "300px",
+				height: "300px",
+				border: "1px solid black",
+				margin: "20px",
+				textAlign: "center",
+				/* boxShadow:"0px 0px 40px rgba(0,0,0,0.9)", */
+			});
+
+			var categoryImage = $("<img>").attr("src", imageSource).appendTo(categoryDiv).css({
+				width: "50%",
+				height: "50%",
+				padding: "20px",
+				borderRadius: "50%"
+			});
+
+			var categoryName = $("<h4>").text(name).appendTo(categoryDiv);
+
+			if(selectedCategory == "artists"){
+				var options = $("<p>").text("Artist").appendTo(categoryDiv);
+			}
+			else if(selectedCategory == "albums"){
+				var options = $("<p>").text("Album").appendTo(categoryDiv);
+			}
+			
+			categoryDiv.appendTo(categoriesContainer);
+
+
+			// Add a click event listener
+			categoryDiv.on("click", function() {
+			var clickedName = $(this).find("h4").text();
+			sendNameToJava(clickedName);
+			// var url = "songDetails.html" + "?category=" + encodeURIComponent(clickedName);
+			// console.log(url);
+			// window.location.href = url;	
+	});
+		}
+	} else {
+		console.log("No category details found.");
+	} 
+}
+
+
+
+
+
+function sendNameToJava(clickedName) {
+	$.ajax({
+		type: "POST",
+		url: "/MusicPlayer/getsongdetails",
+		data: { category: clickedName },
+		success: function(response) {
+			showSongDetails(response);
+		},
+		error: function(error){
+			console.log(error);
+		}
+	});
+}
+
+function showSongDetails(data){
+
+	if (data != null && data != undefined) {
+		songDetailsContainer = $("#songDetailsContainer");
+		categoriesContainer.empty();    ///// empty()
+		songDetailsContainer.empty();   ///// empty()
+		// playSong.empty();            ///// empty()
+		
+		for (var i = 0; i < data.length; i++) {
+			var songDetails = data[i];
+			
+			var sImage = songDetails.song_image;
+			var sName  = songDetails.song_name;
+			var sAudio = songDetails.audio;
+			var id = songDetails.song_id;
+			
+			var songDetailsDiv = $("<div onclick='eachDiv(this)'>").addClass("songDetails").css({
+				width: "300px",
+				height: "350px",
+				border: "3px solid black",
+				margin: "20px",
+				textAlign: "center",
+				/* boxShadow:"0px 0px 40px rgba(0,0,0,0.9)", */
+			});
+			
+			var songImage = $("<img>").attr("src",sImage).appendTo(songDetailsDiv).css({
+				width: "50%",
+				height: "50%",
+				margin:"20px",
+				borderRadius: "50%",
+				boxShadow:"0px 0px 40px rgba(0,0,0,0.6)",
+			});
+
+			var songName = $("<h4>").text(sName).appendTo(songDetailsDiv).css({
+				color:"gray",
+			});
+
+			var audio = $("<audio>").attr("src",sAudio).appendTo(songDetailsDiv);
+			
+			var song = $("<p>").text("Song").appendTo(songDetailsDiv);
+
+			songDetailsDiv.appendTo(songDetailsContainer);
+			
+			songDetailsDiv.on("click", function() {
+				
+				playSong(sImage,sName,sAudio,id);
+				categoriesContainer.empty();    ///// empty()
+			});
+		}
+	} else {
+		console.log("No song details found.");
+	} 
+}
+
+
+function playSong(sImage,sName,sAudio,id){
+				
+	var songContainer = $("#songContainer");
+	var wrapper = $("<div>").addClass("song").css({
+		border:"5px solid black",
+		width:"500px",
+		height:"500px",
+		margin:"20px",
+	});
+
+	var songImage = $("<img>").attr("src",sImage).appendTo(wrapper).css({
+		width: "50%",
+		height: "50%",
+		margin:"20px",
+		borderRadius: "50%",
+		boxShadow:"0px 0px 40px rgba(0,0,0,0.6)",
+	});
+
+	var songName = $("<h2>").text(sName).appendTo(wrapper).css({
+
+	});
+
+	var Audio = $("<audio>").attr("src",sAudio).appendTo(wrapper);
+	var playButton = $("<button>").text("Play").appendTo(wrapper);
+	var pauseButton = $("<button>").text("Pause").appendTo(wrapper);
+	var resetButton = $("<button>").text("Reset").appendTo(wrapper);
+
+
+	playButton.on("click",function(){
+		Audio[0].play();
+	});
+	pauseButton.on("click",function(){
+		Audio[0].pause();
+	});
+	resetButton.on("click",function(){
+		Audio[0].currentTime = 0;
+		Audio[0].pause();
+	});
+	
+	wrapper.appendTo(songContainer);
+}
+
+function eachDiv(e){
+	
+	console.log(e);
+
+	songDetailsContainer = $("#songDetailsContainer");
+	var song = e.querySelector("audio");
+	console.log(song);
+	var button = $("<button>").text("Play").appendTo(songDetailsContainer);
+	button.on("click",function(){
+		song.play();
+	});
+}
+
+
+
+
+
+
+
+
+
+
+$(document).ready(function(){
+	$("#categories").change(function(){
+		var selectedCategory = $(this).val();
+		getCatagoryDetails(selectedCategory);
+	});
+});
+
+
+var categoriesContainer;
+var songDetailsContainer;
+
+function getCatagoryDetails(selectedCategory){
+	$.ajax({
+		type: "POST",
+		url: "/MusicPlayer/searchCategory",
+		data: { categories: selectedCategory },
+		success: function(res){
+			updateCatagory(res, selectedCategory);
+			songDetailsContainer.empty();           ///// empty()
+		},
+		error: function(error){
+			console.log(error);
+		}
+	});
+}
+
+
+function updateCatagory(data, selectedCategory) {
+	if (data != null && data != undefined) {
+		categoriesContainer = $("#categoriesContainer");
+		categoriesContainer.empty();               ///// empty()
+		
+
+		for (var i = 0; i < data.length; i++) {
+			var category = data[i];
+
+			var imageSource = category[selectedCategory + "_image"];
+			var name = category[selectedCategory + "_name"];
+			
+			
+
+			var categoryDiv = $("<div>").addClass("category").css({
+				width: "300px",
+				height: "300px",
+				border: "1px solid black",
+				margin: "20px",
+				textAlign: "center",
+				/* boxShadow:"0px 0px 40px rgba(0,0,0,0.9)", */
+			});
+
+			var categoryImage = $("<img>").attr("src", imageSource).appendTo(categoryDiv).css({
+				width: "50%",
+				height: "50%",
+				padding: "20px",
+				borderRadius: "50%"
+			});
+
+			var categoryName = $("<h4>").text(name).appendTo(categoryDiv);
+
+			if(selectedCategory == "artists"){
+				var options = $("<p>").text("Artist").appendTo(categoryDiv);
+			}
+			else if(selectedCategory == "albums"){
+				var options = $("<p>").text("Album").appendTo(categoryDiv);
+			}
+			
+			categoryDiv.appendTo(categoriesContainer);
+
+
+			// Add a click event listener
+			categoryDiv.on("click", function() {
+			var clickedName = $(this).find("h4").text();
+			sendNameToJava(clickedName);
+			// var url = "songDetails.html" + "?category=" + encodeURIComponent(clickedName);
+			// console.log(url);
+			// window.location.href = url;	
+	});
+		}
+	} else {
+		console.log("No category details found.");
+	} 
+}
+
+
+
+
+
+function sendNameToJava(clickedName) {
+	$.ajax({
+		type: "POST",
+		url: "/MusicPlayer/getsongdetails",
+		data: { category: clickedName },
+		success: function(response) {
+			showSongDetails(response);
+		},
+		error: function(error){
+			console.log(error);
+		}
+	});
+}
+
+var songDetailsDiv;
+// var Audiooo;
+// var buttonsDiv;
+
+function showSongDetails(data){
+
+	if (data != null && data != undefined) {
+		songDetailsContainer = $("#songDetailsContainer");
+		categoriesContainer.empty();    ///// empty()
+		songDetailsContainer.empty();   ///// empty()
+		// playSong.empty();            ///// empty()
+		
+		for (var i = 0; i < data.length; i++) {
+			var songDetails = data[i];
+			
+			var sImage = songDetails.song_image;
+			var sName  = songDetails.song_name;
+			var sAudio = songDetails.audio;
+			var id = songDetails.song_id;
+			
+			songDetailsDiv = $("<div onclick='eachDiv(this)'>").addClass("songDetails").css({
+				width: "300px",
+				height: "350px",
+				border: "3px solid black",
+				margin: "20px",
+				textAlign: "center",
+				/* boxShadow:"0px 0px 40px rgba(0,0,0,0.9)", */
+			});
+			
+			var songImage = $("<img>").attr("src",sImage).appendTo(songDetailsDiv).css({
+				width: "50%",
+				height: "50%",
+				margin:"20px",
+				borderRadius: "50%",
+				boxShadow:"0px 0px 40px rgba(0,0,0,0.6)",
+			});
+
+			var songName = $("<h4>").text(sName).appendTo(songDetailsDiv).css({
+				color:"gray",
+			});
+
+			var audio = $("<audio>").attr("src",sAudio).appendTo(songDetailsDiv);
+			
+			var song = $("<p>").text("Song").appendTo(songDetailsDiv);
+
+			
+
+			
+			songDetailsDiv.appendTo(songDetailsContainer);
+			
+			
+			songDetailsDiv.on("click", function() {
+				categoriesContainer.empty();    ///// empty()
+			});
+
+			
+			
+			
+		}
+		
+	} else {
+		console.log("No song details found.");
+	} 
+}
+
+
+
+function eachDiv(e){
+	console.log(e);
+	var Audiooo = e.querySelector("audio");
+	console.log(Audiooo);
+
+	buttonsDiv = $("<div>").addClass("buttons").css({
+		border:"1px solid red",
+	});
+
+	var playButton = $("<button>").text("Play").appendTo(buttonsDiv);
+		playButton.on("click",function(){
+			console.log(Audiooo);
+			Audiooo.play();
+	});
+
+	var pauseButton = $("<button>").text("Pause").appendTo(buttonsDiv);
+		pauseButton.on("click",function(){
+			
+			Audiooo.pause();
+	});
+
+	var resetButton = $("<button>").text("Reset").appendTo(buttonsDiv);
+		resetButton.on("click",function(){
+			
+			Audiooo.currentTime = 0;
+			Audiooo.pause();
+	});
+
+	// buttonsDiv.appendTo(songDetailsDiv);
+	songDetailsDiv.append(buttonsDiv);
+
+}
+---------------------------------raj code-----------------------------
+var Imageee;
+var Audiooo;
+var Nameee;
+const PLAYSONGDIV = document.querySelector(".playsong");
+const PLAYSONGAUDIO = document.querySelector(".playsong > audio");
+const PLAYSONABTN = document.querySelector(".playsong > span");
+// let showFlag = true;
+function eachDiv(e){
+	console.log(e);
+	 Imageee = e.querySelector('img').src;
+	 Audiooo = e.querySelector('audio').src;
+	 Nameee = e.querySelector('h4').innerHTML;
+
+	console.log(Imageee);
+	console.log(Audiooo);
+	console.log(Nameee.value);
+	// if (showFlag) {
+		PLAYSONGDIV.style.display = "flex";
+		showSongDisplay(Imageee,Nameee,Audiooo)
+		showFlag = false;
+	// }else{
+	// 	PLAYSONGDIV.style.display = "none";
+	// 	PLAYSONABTN.innerHTML = "play_arrow";
+	// 	Audiooo.pause();
+	// 	showFlag = true;
+	// }
+	// playSong();
+}
+
+function showSongDisplay(img,name, Audiooo){
+	PLAYSONGAUDIO.src = Audiooo;
+	PLAYSONABTN.innerHTML = "pause";
+	PLAYSONGAUDIO.play();
+	const PLAYSONGIMG = document.querySelector(".songdetails > img");
+	const PLAYSONGNAME = document.querySelector(".songcontent > h2");
+	const PLAYSONARTIST = document.querySelector(".songcontent > p");
+	
+	PLAYSONGIMG.src = img;
+	PLAYSONGNAME.innerHTML = name;
+	
+	// PLAYSONARTIST.innerHTML = artist;
+let songFlag = true;
+	PLAYSONABTN.addEventListener("click",()=>{
+		if (songFlag) {
+			
+			PLAYSONABTN.innerHTML = "play_arrow";
+			PLAYSONGAUDIO.pause();
+			songFlag = false;
+		}else{
+			PLAYSONABTN.innerHTML = "pause";
+			PLAYSONGAUDIO.play();
+			songFlag = true;
+		}
+	});
+
+}
+function playSong(){
+
+	var playSongDiv = $("<div>").addClass("playSong").css({
+		width: "300px",
+		height: "350px",
+		border: "3px solid red",
+		
+	});
+
+	var songImage = $("<img>").attr("src",Imageee).appendTo(playSongDiv).css({
+		width: "50%",
+		height: "50%",
+		margin:"20px",
+		borderRadius: "50%",
+		boxShadow:"0px 0px 40px rgba(0,0,0,0.6)",
+	});
+
+	var songName = $("<h4>").text(Nameee.value).appendTo(playSongDiv).css({
+		color:"gray",
+	});
+
+	buttonsDiv = $("<div>").addClass("buttons").css({
+		border:"1px solid red",
+	});
+
+	var playButton = $("<button>").text("Play").appendTo(buttonsDiv);
+		playButton.on("click",function(){
+			console.log(Audiooo);
+			Audiooo.play();
+	});
+
+	var pauseButton = $("<button>").text("Pause").appendTo(buttonsDiv);
+		pauseButton.on("click",function(){
+			
+			Audiooo.pause();
+	});
+
+	var resetButton = $("<button>").text("Reset").appendTo(buttonsDiv);
+		resetButton.on("click",function(){
+			
+			Audiooo.currentTime = 0;
+			Audiooo.pause();
+	});
+
+	buttonsDiv.appendTo(playSongDiv);
+	playSongDiv.appendTo(songDetailsContainer)
+	// songDetailsDiv.append(buttonsDiv);
+}
+------------------------------css-------------------------------
+.playsong {
+			border: 1px solid grey;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 10px;
+			display: none;
+		}
+
+		.playsong>span {
+			border: 1px solid black;
+			width: 32px;
+			height: 32px;
+			border-radius: 50%;
+			line-height: 32px;
+			text-align: center;
+			color: black;
+			cursor: pointer;
+		}
+		.songdetails{
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.playsong .songdetails >img {
+			border: 1px solid black;
+			width: 80px;
+			height: 80px;
+			border-radius: 10px;
+			align-self: flex-start;
+			margin-right: 10px;
+		}/* .playsong {
+			border: 1px solid grey;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 10px;
+			display: none;
+		}
+
+		.playsong>span {
+			border: 1px solid black;
+			width: 32px;
+			height: 32px;
+			border-radius: 50%;
+			line-height: 32px;
+			text-align: center;
+			color: black;
+			cursor: pointer;
+		}
+		.songdetails{
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.playsong .songdetails >img {
+			border: 1px solid black;
+			width: 80px;
+			height: 80px;
+			border-radius: 10px;
+			align-self: flex-start;
+			margin-right: 10px;
+		}
+
+		.playsong .songcontent>h2,p {
+			margin: 0%;
+			padding: 3px;
+			color: black;
+		} */
+
+		.playsong .songcontent>h2,p {
+			margin: 0%;
+			padding: 3px;
+			color: black;
+		}
+----------------------------------------------html----------------------------------------
+<div class="playsong">
+		<div class="songdetails">
+			<img src="" alt="">
+			<div class="songcontent">
+				<h2>summma</h2>
+				<p>rajkumar</p>
+			</div>
+		</div>
+		<audio src=""></audio>
+		<span class="material-symbols-outlined">
+			play_arrow
+		</span>
+	</div>
+	
+	
+	
+	
+	
+	
+	------------------------------audio with range---------------------
+	
+	
+	
+	<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Player with Time Control</title>
+</head>
+<body>
+    <h1>Audio Player</h1>
+
+    <!-- Audio Player -->
+    <audio id="audioPlayer" controls>
+        <source src="songs/A-life-Full-of-love.mp3" type="audio/mpeg">
+        <h1>Your browser does not support the audio element.</h1>
+    </audio>
+
+    <!-- Time Control -->
+    <label for="timeRange">Time:</label>
+    <input type="range" id="timeRange" min="0" max="100" value="0">
+
+    <script>
+        // Get references to the audio element and time range input
+        var audioPlayer = document.getElementById("audioPlayer");
+        var timeRange = document.getElementById("timeRange");
+
+        // Add an event listener to the audio element to update the time range input
+        audioPlayer.addEventListener("timeupdate", function () {
+            var currentTime = audioPlayer.currentTime;
+            var duration = audioPlayer.duration;
+            
+            // Calculate the percentage of audio progress
+            var progressPercentage = (currentTime / duration) * 100;
+            
+            // Update the time range input value
+            timeRange.value = progressPercentage;
+        });
+
+        // Add an event listener to the time range input to update the audio's playback time
+        timeRange.addEventListener("input", function () {
+            var progressPercentage = this.value;
+            var duration = audioPlayer.duration;
+            
+            // Calculate the corresponding time based on the percentage
+            var currentTime = (progressPercentage / 100) * duration;
+            
+            // Update the audio's current time
+            audioPlayer.currentTime = currentTime;
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BOOKWORLD</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <style>
+
+    	body{
+    		width: 99%;
+    		height: 100vh;
+    		background-color: white;
+    		margin: 0;
+    		padding: 0;
+    		display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+    	}
+    	.fixed-section{
+    		position: fixed;
+    		top:0;
+    		background-color: white;
+    	}
+    	.nav-bar{
+    		display: flex;
+    		width: 100vw;
+    	}
+    	.left-nav{
+    		margin:auto ;
+    		display: flex;
+    	}
+    	.left-nav img{
+    		width:80px;
+    		height:80px;
+    	}
+    	.right-nav{
+    		margin:auto ;
+    		display: flex;
+    	}
+    	.right-nav a,button{
+    		margin:20px 0px 30px 20px;
+    		color: black;
+    		font-size: 25px;
+    	}
+    	.right-nav button{
+    		font-size: 35px;
+    		background-color: white;
+    		border:none;
+    	}
+    	.input-div{
+    		display: flex;
+    		justify-content: center;
+    		margin:-10px 0px 20px 0px;
+    	}
+    	.input-div span{
+    		margin-left: -55px;
+    		color: black;
+    		padding-top:20px;
+    		font-size: 30px;
+    		font-weight: bolder;
+    	}
+    	.input-div span:hover,.right-nav a:hover,.right-nav button:hover,.right-nav p:hover{
+			cursor: pointer;	
+    	}
+    	.input-div input{
+    		width:500px;
+    		padding: 20px;
+    		border-radius: 27px;
+    		border:3px solid black;
+
+    	}
+    	.shelf{
+    		display: flex;
+    		margin-left:220px;
+    	}
+    	.desc{
+    		width: 400px;
+    		height: 500px;
+    		margin-left:100px ;
+    	}
+    	.desc p{
+    		font-size: 20px;
+    		font-weight: 100;
+    	}
+    	#About{
+    		margin-top:20px;
+    		position:absolute;
+    		margin-left:120px;
+    		display:none;
+    		scroll-behavior: smooth;
+    	}
+    	#About h1{
+    		margin-left:150px;
+    		font-size: 30px;
+    	}
+    	#Home{
+    		width:100%;
+    		height:70vh;
+    		display:none;    		
+    	}
+    	#book-list{
+			display:flex;
+			flex-wrap:wrap;
+			justify-content:space-evenly;
+    	}
+    	section{
+    		 border:5px solid red; 
+    		 display: flex;
+    		 flex-direction: column;
+    		 justify-content: center;
+    		 align-items: center; 
+    		 padding:10px;
+    		 border-radius: 20px 20px 20px 0px;
+    	}
+    	#loading {
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		  font-size: 28px;
+		  height:30%;
+		}
+		.material-symbols-outlined {
+		  font-variation-settings:
+		  'FILL' 0,
+		  'wght' 400,
+		  'GRAD' 0,
+		  'opsz' 48
+		}
+		
+		#user{
+			border:3px solid black;
+			border-radius: 50%;
+			width:50px;
+			height:50px;
+			margin:10px 0px 20px 20px;
+			text-align:center;
+			font-size: 40px;
+		}
+		
+		#userDetails{
+			border:3px solid black;
+			width:300px;
+			height: 300px;
+			position:absolute;
+			top:6.5%;
+			right:6.5%;
+			border-radius: 20px;
+			display: none;
+			
+		}
+		#userDetails p{
+			border:3px solid black;
+		}
+    	
+    </style>
+</head>
+
+<body>
+				<div class="fixed-section">
+						<nav class="nav-bar">
+						<nav class="left-nav">
+					    	<img src="book.jpg">
+					    	<h1>BOOKWORLD</h1>
+					    </nav>
+					    <nav class="right-nav">
+					    	<a href="#Home" onclick="showHome()">Home</a>
+					    	<a href="#About" onclick="showAbout()">About</a>
+					    	<!-- <img id="image" width="100px" height="100px"> -->
+					    	<p id="user"></p>
+					    	<button  type="submit" id="myButton" class="material-symbols-outlined">logout</button>
+					    </nav>	
+					</nav>
+					<div class="input-div">
+							<input id="search-list" type="text" placeholder="Your words.." autocomplete="off">
+							<span class="material-symbols-outlined" onclick="showSearch()">search</span>
+					</div>
+				</div>
+				
+				<div id="userDetails">
+					<p id="user"></p>
+					<p id="userName">Ajitha V</p>
+					<p id="userEmail">qwerty@123</p>
+				</div>
+			
+				<section id="section">
+						<h1>Find your book of choice.</h1>
+						<p>"The more that you read, the more things you will know. The more that you learn, the more places you’ll go."- Dr. Seuss</p>
+				</section>
+				<div id="About">
+					<h1>ABOUT</h1>
+					<div class="shelf">
+						<img src="about.jpg">
+						<div class="desc">
+							<h2>About Book World</h2>
+							<h4>BookWorld: Your One-Stop Bookstore App</h4>
+								<p>Discover, explore, and purchase your favorite books with BookWorld. Our user-friendly app offers a vast collection of titles from various genres. Search, add to cart, and checkout seamlessly. Immerse yourself in the world of literature with BookWorld. Happy reading!</p>
+							<h4>Books: A Gateway to Infinite Worlds</h4>
+								<p>Books, the timeless treasures of knowledge and imagination, hold the power to transport us to far-off lands, unravel the mysteries of the universe, and delve into the depths of human emotions. With each turn of the page, we embark on a journey that ignites our minds and touches our souls.</p>
+						</div>
+					</div>
+				</div>
+				<div id="Home">
+					<div id="book-list"></div>
+				</div>
+				<div id="loading" style="display:none;">
+				  Loading...
+				</div>
+</body>
+ <script src="show.js"></script>
+ <script>
+ 		// getting first letter from loginName using from signIn.html
+		 document.addEventListener('DOMContentLoaded', function () {
+		     const storedFirstLetter = localStorage.getItem('firstLetter');
+		     if (storedFirstLetter) {
+		         const userElement = document.getElementById('user');
+		         userElement.textContent = storedFirstLetter;
+		     }
+		 });
+ 
+ 		// logging out the user and redirect the page to signIn.html
+        document.getElementById("myButton").addEventListener("click", function() {
+            window.location.href = "logout";
+        });
+ 		
+ 		
+        /* document.getElementById('user').addEventListener('click', function(){
+        	const userDetails = document.getElementById("userDetails");
+        	userDetails.style.display = "block";
+        }); */
+        
+    </script>
+
+</html>
+

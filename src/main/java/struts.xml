@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+	"http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="true" />
+	<package name="default" extends="struts-default" namespace="/">
+	
+		<action name="signUp" class="com.login.SignUp" method="connection">
+			<result name="success">/signIn.html</result>
+			<result name="error">/signUp.html</result>
+		</action>
+		
+		<action name="signIn" class="com.login.SignUp" method="verifyUser">
+			<result name="success">/Home.html</result>
+			<result name="error">/signIn.html</result>
+		</action>
+		
+		<action name="logout" class="com.login.SignUp" method="logout">
+			<result name="success">/signIn.html</result>
+			<result name="error">/Home.html</result>
+		</action>
+		
+		<action name="forgotBtn" class="com.login.SignUp" method="forgotBtn">
+			<result name="success">/signIn.html</result>
+			<result name="error">/forgotPass.html</result>
+		</action>
+	</package>
+</struts>
+
+
+
+
+
+
+
+
+
+
+
+<!-- <?xml version="1.0" encoding="UTF-8"?> <struts> <package name="default" 
+	extends="struts-default"> <constant name="struts.devMode" value="true"/> 
+	<action name="index"> <result>/index.jsp</result> </action> <action name="callStruts" 
+	class="com.struts.ActionStruts"> <result name="success">/welcome.jsp</result> 
+	<result name="failure">/error.jsp</result> </action> </package> </struts> -->
